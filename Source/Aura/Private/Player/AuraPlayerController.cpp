@@ -11,6 +11,18 @@ AAuraPlayerController::AAuraPlayerController()
 	bReplicates = true;
 }
 
+void AAuraPlayerController::PlayerTick(float DeltaTime)
+{
+	Super::PlayerTick(DeltaTime);
+	
+	
+}
+
+void AAuraPlayerController::CursorTrace()
+{
+	
+}
+
 void AAuraPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
