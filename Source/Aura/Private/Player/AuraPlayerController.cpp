@@ -5,6 +5,8 @@
 
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
+#include "Interaction/EnemyInterface.h"
+#include "DrawDebugHelpers.h"
 
 AAuraPlayerController::AAuraPlayerController()
 {
@@ -15,12 +17,55 @@ void AAuraPlayerController::PlayerTick(float DeltaTime)
 {
 	Super::PlayerTick(DeltaTime);
 	
-	
+	CursorTrace();
 }
 
 void AAuraPlayerController::CursorTrace()
 {
+	FHitResult CursorHit;
 	
+	//단순한 충돌 체크
+	GetHitResultUnderCursor(ECC_Visibility, false, CursorHit);
+	
+	//블락된게 없다면 리턴
+	if (!CursorHit.bBlockingHit) return;
+	
+	LastActor = ThisActor;
+	ThisActor = CursorHit.GetActor();
+	
+	/**
+	 * 커서 추적
+	 * 
+	 *	A. LastActor is null && ThisActor is null
+	 *		- 아무일도 하지 않음
+	 * B. LastActor is null && ThisActor is valid
+	 *		- Highlight ThisActor
+	 * C. LastActor is valid && ThisActor is null
+	 * 		- UnHighlight LastActor
+	 * D. Both Actors are valid, but LastActor != ThisActor
+	 * 		- UnHighlight LastActor
+	 * 		- Highlight ThisActor
+	 * E. Both Actors are valid, but are the same actor
+	 * 		- 아무 일도 하지 않음
+	 */
+	
+	if (ThisActor != LastActor)
+	{
+		// Cast B, C
+		if (ThisActor == nullptr && LastActor != nullptr)
+		{
+			LastActor->UnHighlightActor();
+		}
+		else if (ThisActor != nullptr && LastActor == nullptr)
+		{
+			ThisActor->HighlightActor();
+		}
+		else if (ThisActor != nullptr && LastActor != nullptr)
+		{
+			LastActor->UnHighlightActor();
+			ThisActor->HighlightActor();
+		}
+	}
 }
 
 void AAuraPlayerController::BeginPlay()
