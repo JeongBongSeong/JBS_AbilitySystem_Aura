@@ -22,34 +22,25 @@ void AAuraEnemy::Tick(float DeltaSeconds)
 	// }
 }
 
+AAuraEnemy::AAuraEnemy()
+{
+	GetMesh()->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
+}
+
 void AAuraEnemy::HighlightActor()
 {
 	bHighlighted = true;
 
-	if (UPrimitiveComponent* Mesh = GetMesh())
-	{
-		Mesh->SetRenderCustomDepth(bHighlighted);
-		Mesh->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
-
-		if (UPrimitiveComponent* child = Cast<UPrimitiveComponent>(Mesh->GetChildComponent(0)))
-		{
-			child->SetRenderCustomDepth(bHighlighted);
-			child->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
-		}
-	}
+	GetMesh()->SetRenderCustomDepth(bHighlighted);
+	GetMesh()->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
+	Weapon->SetRenderCustomDepth(bHighlighted);
+	Weapon->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
 }
 
 void AAuraEnemy::UnHighlightActor()
 {
 	bHighlighted = false;
 
-	if (UPrimitiveComponent* Mesh = GetMesh())
-	{
-		Mesh->SetRenderCustomDepth(bHighlighted);
-
-		if (UPrimitiveComponent* child = Cast<UPrimitiveComponent>(Mesh->GetChildComponent(0)))
-		{
-			child->SetRenderCustomDepth(bHighlighted);
-		}
-	}
+	GetMesh()->SetRenderCustomDepth(bHighlighted);
+	Weapon->SetRenderCustomDepth(bHighlighted);
 }
