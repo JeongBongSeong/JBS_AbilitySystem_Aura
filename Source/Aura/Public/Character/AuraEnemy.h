@@ -17,6 +17,7 @@ class AURA_API AAuraEnemy : public AAuraCharacterBase, public IEnemyInterface
 private:
 	void ActorDrawDebugSphere() const;
 protected:
+	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
 public:
 	AAuraEnemy();
