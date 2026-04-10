@@ -19,6 +19,8 @@ void AAuraEnemy::BeginPlay()
 	Super::BeginPlay();
 	
 	AbilitySystemComponent->InitAbilityActorInfo(this,this);
+	
+	AbilitySystemComponent->GetAttributeSet(UAuraAttributeSet::StaticClass());
 }
 
 void AAuraEnemy::Tick(float DeltaSeconds)
