@@ -5,7 +5,9 @@
 
 #include "AbilitySystemComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Player/AuraPlayerController.h"
 #include "Player/AuraPlayerState.h"
+#include "UI/HUD/AuraHUD.h"
 
 AAuraCharacter::AAuraCharacter()
 {
@@ -31,6 +33,9 @@ void AAuraCharacter::PossessedBy(AController* NewController)
 
 	//서버에 대한 ASC 정보를 캐싱하고 초기화 한다.
 	InitAbilityActorInfo();
+
+	//HUD에서 Overlay를 초기화 하는 부분
+	InitOverlay();
 }
 
 //클라이언트용 빙의시점
@@ -40,6 +45,9 @@ void AAuraCharacter::OnRep_PlayerState()
 
 	//클라이언트에 대한 ASC정보를 캐싱하고 초기화 한다.
 	InitAbilityActorInfo();
+
+	//HUD에서 Overlay를 초기화 하는 부분
+	//InitOverlay();
 }
 
 void AAuraCharacter::InitAbilityActorInfo()
@@ -51,4 +59,18 @@ void AAuraCharacter::InitAbilityActorInfo()
 	AttributeSet = AuraPlayerState->GetAttributeSet();
 
 	AbilitySystemComponent->InitAbilityActorInfo(AuraPlayerState, this);
+}
+
+void AAuraCharacter::InitOverlay()
+{
+	AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
+	AAuraPlayerController* AuraPlayerController = Cast<AAuraPlayerController>(GetController());
+	
+	if (AuraPlayerState && AuraPlayerController)
+	{
+		if (AAuraHUD* HUD = Cast<AAuraHUD>(AuraPlayerController->GetHUD()))
+		{
+			HUD->InitOverlay(AuraPlayerController,AuraPlayerState,AbilitySystemComponent,AttributeSet);
+		}
+	}
 }
