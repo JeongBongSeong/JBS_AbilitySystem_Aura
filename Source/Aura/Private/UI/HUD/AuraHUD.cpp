@@ -12,7 +12,10 @@ UOverlayWidgetController* AAuraHUD::GetOverlayWidgetController(const FWidgetCont
 	{
 		OverlayWidgetController = NewObject<UOverlayWidgetController>(this, OverlayWidgetControllerClass);
 		OverlayWidgetController->SetWidgetControllerParams(WCParams);
-	}
+		
+		//attribute 값이 변경되었을 때 호출되는 함수들 바인딩
+		OverlayWidgetController->BindCallbacksToDependencies();
+}
 
 	return OverlayWidgetController;
 }

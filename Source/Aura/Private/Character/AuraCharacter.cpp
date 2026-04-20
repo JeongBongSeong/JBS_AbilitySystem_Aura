@@ -47,7 +47,7 @@ void AAuraCharacter::OnRep_PlayerState()
 	InitAbilityActorInfo();
 
 	//HUD에서 Overlay를 초기화 하는 부분
-	//InitOverlay();
+	InitOverlay();
 }
 
 void AAuraCharacter::InitAbilityActorInfo()

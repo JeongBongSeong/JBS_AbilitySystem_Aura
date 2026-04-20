@@ -78,9 +78,11 @@ void AAuraPlayerController::BeginPlay()
 
 	//서브시스템(관리자)를 불러와서 향상된 UEnhancedInputLocalPlayerSubsystem을 가져오는 것(현재 플레이어를 통해)
 	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
-	check(Subsystem);
-
-	Subsystem->AddMappingContext(AuraContext, 0);
+	
+	if (Subsystem)
+	{
+		Subsystem->AddMappingContext(AuraContext, 0);	
+	}
 
 	//마우스 커서를 숨기지 않음
 	bShowMouseCursor = true;
